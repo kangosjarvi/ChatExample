@@ -1,0 +1,44 @@
+﻿@page "/"
+<div class="chat-container">
+    <div class="messages">
+        @if (Messages == null)
+        {
+            <p>Loading...</p>
+        }
+        else if (Messages.Count == 0)
+        {
+            <p>No messages yet.</p>
+        }
+        else
+        {
+            @foreach (var message in Messages)
+            {
+                <div class="message @(message.Is_Mine ? "sent" : "received")">
+                    @if (message.image_data != null && message.image_data.Length > 0)
+                    {
+                        @if (message.image_data != null && message.image_data.Length > 0)
+                        {
+                            <img src="data:image/png;base64,@Convert.ToBase64String(message.image_data)" alt="Image" class="img-shrink" />
+
+                        }
+                        @if (!string.IsNullOrEmpty(message.Content))
+                        {
+                            <p>@message.Content</p>
+                        }
+                    }
+                    @if (!string.IsNullOrEmpty(message.Content))
+                    {
+                        <p>@message.Content</p>
+                    }
+                    <span class="timestamp">@message.Sent_At.ToString("g")</span>
+                </div>
+            }
+        }
+    </div>
+    <div class="input-container">
+        <input @bind="NewMessage" @bind:event="oninput" placeholder="Type a message..." />
+        <button @onclick="SendMessage">Send</button>
+        <button @onclick="CaptureImage">📷</button>
+        <button @onclick="ProcessAndUploadImage">🖼️</button>
+    </div>
+</div>
